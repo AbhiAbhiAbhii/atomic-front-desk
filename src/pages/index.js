@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 
-export default function FrontDesk({ slice }){
+export default function FrontDesk(){
 
   const [ boolean, setBoolean ] = useState(false) // Boolean switch, Form A and Form B
 
