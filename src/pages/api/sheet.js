@@ -3,7 +3,7 @@ import { google, GoogleApis } from "googleapis"
 
 async function sheet(req, res){
     if(req.method === 'POST') {
-        const { firstData, fullName, number, mail, company, id, location } = req.body
+        const { firstData, fullName, number, mail, company, id, location, purpose, event, meeting, interview } = req.body
 
 
         const auth = new google.auth.GoogleAuth({
@@ -32,7 +32,7 @@ async function sheet(req, res){
             range: 'Sheet1!A2:F',
             valueInputOption: 'USER_ENTERED',
             requestBody: {
-                values: [[firstData, fullName, number, mail, company, id, location]]
+                values: [[firstData, fullName, number, mail, company, id, location, purpose, event, meeting, interview]]
             }
         })
         res.status(201).json({message:"Data successfully exported to sheets"})

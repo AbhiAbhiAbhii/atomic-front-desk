@@ -5,9 +5,9 @@ import { useRef, useState, useEffect } from "react";
 
 export default function FrontDesk({ slice }){
 
-  const [ boolean, setBoolean ] = useState(false)
+  const [ boolean, setBoolean ] = useState(false) // Boolean switch, Form A and Form B
 
-  const [ firstData, setFirstData ] = useState("")
+  const [ firstData, setFirstData ] = useState("") // First time at Atomic Data
 
 
   // Form functionality and data
@@ -18,6 +18,11 @@ export default function FrontDesk({ slice }){
   const [ id, setId ] = useState('')
   const [ location, setLocation ] = useState('')
   const [ purpose, setPurpose ] = useState('')
+
+  // Extra Field
+  const [ event, setEvent ] = useState('')
+  const [ meeting, setMeeting ] = useState('')
+  const [ interview, setInterview ] = useState('')
 
 
   // Focus and Blur states
@@ -81,12 +86,42 @@ export default function FrontDesk({ slice }){
     setLocationFocus(false)
   }
 
+  const [ eventFocused, setEventFocused ] = useState(false)
+
+  const handleEventFocus = () => {
+    setEventFocused(true)
+  }
+
+  const handleEventBlur = () => {
+    setEventFocused(false)
+  }
+
+  const [ meetingFocused, setMeetingFocused ] = useState(false)
+
+  const handleMeetingFocus = () => {
+    setMeetingFocused(true)
+  }
+
+  const handleMeetingBlur = () => {
+    setMeeting(false)
+  }
+
+
+  const [ interviewFocused, setInterviewFocused ] = useState(false)
+
+  const handleInterviewFocus = () => {
+    setInterviewFocused(true)
+  }
+
+  const handleInterviewBlur = () => {
+    setInterview(false)
+  }
 
   // Handle Submit
 
-  const disabled = fullName === "" || number === "";
+  const disabled = fullName === "" || number === ""; // Disable Submit Btn Condition
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { // Handle Submit
     e.preventDefault()
 
     const data = {
@@ -96,17 +131,28 @@ export default function FrontDesk({ slice }){
       mail,
       company,
       id,
-      location
+      location,
+      purpose, 
+      event,
+      meeting,
+      interview
     }
 
-  //  if(!fullName || !number) {
-  //   formError()
-  //   console.log("error")
-  //  } else {
-  //   formSuccess()
-  //   console.log("SUCCESS")
-  //       console.log(data,"THIS IS OUR DATA")
-  //  }
+   if(!fullName || !number) {
+    formError()
+    console.log("error")
+   } else {
+    formSuccess()
+    console.log("SUCCESS")
+
+    setFullName('')
+    setNumber('')
+    setMail('')
+    setId('')
+    setCompany('')
+    setLocation('')
+    setEvent('')
+   }
 
   await fetch("/api/sheet", {
     method:'POST',
@@ -117,7 +163,6 @@ export default function FrontDesk({ slice }){
     body: JSON.stringify(data)
    })
 
-   console.log(data,"DATA")
 
   }
 
@@ -357,13 +402,42 @@ export default function FrontDesk({ slice }){
             {/* AFTER CHOICE */}
             {
               purpose === "Event" ? 
-              <div style={{color:'red'}}>
-                EVENT
-              </div>
+              <div className="form-input-wrapper">
+              <label>
+                Name of Event
+              </label>
+              <input type="text" placeholder="Event Name" id="" 
+              className= {eventFocused ? 'focused':'notFocused'} 
+              onBlur={handleEventBlur}
+              onFocus={handleEventFocus}
+              value={event} 
+              onChange={(e) => setEvent(e.target.value)} />
+            </div>
               :
               purpose === "Meeting" ? 
-              <div style={{color:'blue'}}>
-                MEETING
+              <div className="form-input-wrapper">
+                <label>
+                  Meeting 
+                </label>
+                <input type="text" placeholder="Meeting Name" id="" 
+                className= {meetingFocused ? 'focused':'notFocused'} 
+                onBlur={handleMeetingBlur}
+                onFocus={handleMeetingFocus}
+                value={meeting} 
+                onChange={(e) => setMeeting(e.target.value)} />
+              </div>
+              :
+              purpose === "Interview" ?
+              <div className="form-input-wrapper">
+                <label>
+                  Interview
+                </label>
+                <input type="text" placeholder="Interview Name" id="" 
+                className= {interviewFocused ? 'focused':'notFocused'} 
+                onBlur={handleInterviewBlur}
+                onFocus={handleInterviewFocus}
+                value={interview} 
+                onChange={(e) => setInterview(e.target.value)} />
               </div>
               :
               null
